@@ -1,0 +1,206 @@
+from typing import TypedDict, Annotated, List
+from langgraph.graph import StateGraph, END
+from langchain_groq import ChatGroq
+from langchain_core.messages import HumanMessage
+import os
+from dotenv import load_dotenv
+import models
+import json
+
+load_dotenv(override=True)
+
+def clean_json(text: str) -> dict:
+    text = text.strip()
+    if text.startswith("```json"):
+        text = text[7:]
+    elif text.startswith("```"):
+        text = text[3:]
+    if text.endswith("```"):
+        text = text[:-3]
+    text = text.strip()
+    return json.loads(text, strict=False)
+
+# Initialize LLM
+llm = ChatGroq(
+    model="llama-3.3-70b-versatile",
+    temperature=0,
+    api_key=os.getenv("GROQ_API_KEY", os.getenv("GOOGLE_API_KEY"))
+)
+
+# Define State Schema
+class AgentState(TypedDict):
+    document_text: str
+    extracted_clauses: List[dict]
+    risk_assessments: List[dict]
+    adversarial_checks: List[dict]
+    user_insights: List[dict]
+    final_report: dict
+
+# Agent 1: Clause Extractor Node
+def extract_clauses_node(state: AgentState):
+    print("Agent 1: Extracting clauses...")
+    
+    prompt = f"""
+    You are a legal clause extractor. Identify potentially risky or important clauses.
+    Focus on: liability, privacy, termination, IP, payment, renewal, non-compete.
+    
+    Contract Text:
+    {state['document_text'][:6000]}
+    
+    Return ONLY valid JSON matching this schema:
+    {{
+        "clauses": [
+            {{"text": "clause text", "category": "category_name"}}
+        ]
+    }}
+    """
+    
+    response = llm.invoke([HumanMessage(content=prompt)])
+    try:
+        result = clean_json(response.content)
+        state['extracted_clauses'] = result.get('clauses', [])
+    except Exception as e:
+        print(f"Extractor JSON Error: {e}\nContent: {response.content}")
+        state['extracted_clauses'] = []
+    
+    return state
+
+# Agent 2: Risk Assessor Node
+def assess_risk_node(state: AgentState):
+    print("Agent 2: Assessing risks...")
+    
+    clauses = state['extracted_clauses']
+    if not clauses:
+        state['risk_assessments'] = []
+        return state
+    
+    prompt = f"""
+    You are a legal risk analyst. Score each clause for risk (0-10).
+    
+    Clauses to analyze:
+    {clauses}
+    
+    Return ONLY valid JSON:
+    {{
+        "assessments": [
+            {{"clause_text": "...", "risk_score": 5, "reasoning": "..."}}
+        ]
+    }}
+    """
+    
+    response = llm.invoke([HumanMessage(content=prompt)])
+    try:
+        result = clean_json(response.content)
+        state['risk_assessments'] = result.get('assessments', [])
+    except Exception as e:
+        print(f"Risk Assessor JSON Error: {e}\nContent: {response.content}")
+        state['risk_assessments'] = []
+    
+    return state
+
+# Agent 3: Devil's Advocate Node
+def devils_advocate_node(state: AgentState):
+    print("Agent 3: Playing devil's advocate...")
+    
+    clauses = state['extracted_clauses']
+    if not clauses:
+        state['adversarial_checks'] = []
+        return state
+    
+    prompt = f"""
+    You are a corporate lawyer defending these clauses.
+    Are they standard? Why are they fair to the company?
+    
+    Clauses:
+    {clauses}
+    
+    Return ONLY valid JSON:
+    {{
+        "checks": [
+            {{"clause_text": "...", "is_standard": true, "counter_argument": "..."}}
+        ]
+    }}
+    """
+    
+    response = llm.invoke([HumanMessage(content=prompt)])
+    try:
+        result = clean_json(response.content)
+        state['adversarial_checks'] = result.get('checks', [])
+    except Exception as e:
+        print(f"Devils Advocate JSON Error: {e}\nContent: {response.content}")
+        state['adversarial_checks'] = []
+    
+    return state
+
+# Agent 4: Plain Language Translator Node
+def translate_node(state: AgentState):
+    print("Agent 4: Translating to plain English...")
+    
+    clauses = state['extracted_clauses']
+    if not clauses:
+        state['user_insights'] = []
+        return state
+    
+    prompt = f"""
+    You are a friendly guide explaining contracts to non-lawyers.
+    For each clause, explain in plain English, real-world impact, and negotiation tips.
+    
+    Clauses:
+    {clauses}
+    
+    Return ONLY valid JSON:
+    {{
+        "insights": [
+            {{
+                "clause_text": "...",
+                "plain_english": "...",
+                "real_world_impact": "...",
+                "negotiation_tip": "..."
+            }}
+        ]
+    }}
+    """
+    
+    response = llm.invoke([HumanMessage(content=prompt)])
+    try:
+        result = clean_json(response.content)
+        state['user_insights'] = result.get('insights', [])
+    except Exception as e:
+        print(f"Translator JSON Error: {e}\nContent: {response.content}")
+        state['user_insights'] = []
+    return state
+
+# Build the Graph
+def create_workflow():
+    workflow = StateGraph(AgentState)
+    
+    # Add nodes
+    workflow.add_node("extractor", extract_clauses_node)
+    workflow.add_node("risk_assessor", assess_risk_node)
+    workflow.add_node("devils_advocate", devils_advocate_node)
+    workflow.add_node("translator", translate_node)
+    
+    # Define edges (sequential flow)
+    workflow.set_entry_point("extractor")
+    workflow.add_edge("extractor", "risk_assessor")
+    workflow.add_edge("risk_assessor", "devils_advocate")
+    workflow.add_edge("devils_advocate", "translator")
+    workflow.add_edge("translator", END)
+    
+    return workflow.compile()
+
+# Main execution function
+def run_analysis(document_text: str):
+    workflow = create_workflow()
+    
+    initial_state = {
+        "document_text": document_text,
+        "extracted_clauses": [],
+        "risk_assessments": [],
+        "adversarial_checks": [],
+        "user_insights": [],
+        "final_report": {}
+    }
+    
+    result = workflow.invoke(initial_state)
+    return result
