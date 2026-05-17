@@ -1,0 +1,144 @@
+{
+  "employment": {
+    "termination": {
+      "standard_clause": "Either party may terminate this agreement with 30 days written notice. Upon termination, the Employer shall pay all wages due and accrued pro-rata benefits for work performed up to the termination date.",
+      "fairness_note": "Mutual termination rights with reasonable advance notice (typically 14 to 30 days) are industry standard. Immediate termination should be strictly reserved for egregious cause (e.g., gross misconduct)."
+    },
+    "non_compete": {
+      "standard_clause": "Employee agrees not to engage in direct commercial competition with the Employer for a period of 6 months post-employment within a 25-mile radius of their primary work location.",
+      "fairness_note": "Non-compete clauses must be narrowly tailored in duration (6-12 months max) and geographic scope to be legally enforceable in most jurisdictions. Overbroad non-competes are unenforceable."
+    },
+    "intellectual_property": {
+      "standard_clause": "Employer retains exclusive ownership of all work product, code, and intellectual property conceived or developed by the Employee during working hours or utilizing company equipment/resources. Employee retains full rights to pre-existing intellectual property and projects developed entirely on personal time without company resources.",
+      "fairness_note": "Standard IP assignment must include explicit statutory carve-outs protecting the employee's pre-existing inventions and off-duty personal creations."
+    },
+    "severance": {
+      "standard_clause": "In the event of involuntary termination without cause, Employee shall be entitled to severance pay equivalent to two weeks of base salary for each completed year of continuous service, subject to the execution of a standard general release of claims.",
+      "fairness_note": "A baseline severance schedule tied to tenure provides mutual security and protects the employer from wrongful termination litigation."
+    },
+    "non_solicitation": {
+      "standard_clause": "Employee agrees not to solicit, hire, or entice away any current employees, contractors, or active clients of the Employer for a period of 12 months following the cessation of employment.",
+      "fairness_note": "Non-solicitation of co-workers and clients is standard commercial practice, provided the restriction period does not exceed 12 to 24 months."
+    },
+    "remote_work_expenses": {
+      "standard_clause": "Employer shall reimburse Employee for all reasonable, necessary, and itemized operational expenses incurred in the direct performance of remote job duties, including a monthly stipend for telecommunications and home office internet.",
+      "fairness_note": "Fair employment agreements mandate employer reimbursement for mandatory business tools and home office infrastructure."
+    }
+  },
+  "saas_and_software": {
+    "liability_cap": {
+      "standard_clause": "In no event shall either party's total cumulative liability arising out of or related to this agreement exceed the total subscription fees actually paid by Customer to Provider in the 12-month period immediately preceding the event giving rise to the claim.",
+      "fairness_note": "A liability cap pegged to 12 months of trailing fees is the absolute gold standard in SaaS contracting, balancing vendor solvency against customer financial recourse."
+    },
+    "data_privacy_and_ownership": {
+      "standard_clause": "Customer retains all right, title, and interest in and to Customer Data. Provider shall implement and maintain commercially reasonable administrative, physical, and technical safeguards designed to secure Customer Data against accidental or unlawful destruction, loss, alteration, or unauthorized disclosure.",
+      "fairness_note": "Customer data ownership must be absolute. Vendor rights should be strictly limited to a revocable license to process data solely to provide the cloud service."
+    },
+    "service_level_agreement": {
+      "standard_clause": "Provider guarantees a monthly operational uptime of 99.9%. If Provider fails to meet this Service Level Commitment in any given billing month, Customer shall be entitled to receive a service credit equal to a percentage of their monthly subscription fee, proportional to the downtime incurred.",
+      "fairness_note": "Service level commitments backed by enforceable financial remedies (service credits) are mandatory for enterprise-grade SaaS agreements."
+    },
+    "price_increases": {
+      "standard_clause": "Provider reserves the right to increase subscription fees upon renewal, provided that such increase shall not exceed 5% or the prevailing Consumer Price Index (CPI), whichever is lower, and Provider delivers written notice at least 60 days prior to the expiration of the then-current subscription term.",
+      "fairness_note": "Predictable, capped annual fee adjustments protect customers from predatory renewal hikes and vendor lock-in extortion."
+    },
+    "ip_indemnification": {
+      "standard_clause": "Provider shall defend, indemnify, and hold harmless Customer against any third-party claims alleging that the proprietary SaaS platform infringes any valid patent, copyright, or trademark, provided Customer gives prompt written notice of the claim and sole control over the defense.",
+      "fairness_note": "Standard software vendor obligation to protect end-users from third-party intellectual property infringement lawsuits."
+    },
+    "data_portability": {
+      "standard_clause": "Upon termination or expiration of the agreement, Provider shall make all Customer Data available for complete electronic export/download in an industry-standard structured format for a period of 30 days, at no additional charge.",
+      "fairness_note": "Prevents vendor hostage-taking of customer operational data upon contract cancellation."
+    }
+  },
+  "freelance_and_contractor": {
+    "payment_terms": {
+      "standard_clause": "Client shall pay Contractor undisputed invoice amounts within 30 days of receipt (Net 30). Late payments shall accrue interest at a rate of 1.5% per month or the maximum rate permitted by law.",
+      "fairness_note": "Net 30 payment terms paired with a modest late fee incentivize prompt compensation and maintain healthy cash flow for independent professionals."
+    },
+    "scope_creep_and_revisions": {
+      "standard_clause": "The fixed project fee includes up to two (2) rounds of minor revisions. Any additional revision requests or substantive changes to the original Scope of Work shall be billed via a formal Change Order at Contractor's prevailing hourly rate of $X/hr.",
+      "fairness_note": "Explicit revision caps and structured change-order protocols protect contractors from uncompensated scope creep."
+    },
+    "independent_contractor_status": {
+      "standard_clause": "Contractor is an independent professional, not an employee, agent, or partner of the Client. Contractor retains sole discretion over the manner, method, and hours utilized to complete the deliverables, and is solely responsible for all applicable self-employment taxes.",
+      "fairness_note": "Clear delineation of independent status prevents worker misclassification liabilities and preserves contractor autonomy."
+    },
+    "work_for_hire_transfer": {
+      "standard_clause": "Upon receipt of full and final payment, Contractor assigns to Client all right, title, and interest in the custom deliverables. Contractor retains ownership of pre-existing background technology incorporated into the deliverables, granting Client a perpetual, royalty-free license to utilize such background technology solely within the deliverables.",
+      "fairness_note": "Conditional IP transfer upon full payment protects the freelancer from non-payment while securing necessary ownership for the client."
+    }
+  },
+  "rental_and_leasing": {
+    "security_deposit": {
+      "standard_clause": "Security deposit shall not exceed the equivalent of one month's rent. Landlord shall hold the deposit in a dedicated account and return the balance within 21 days of Tenant vacating the premises, accompanied by an itemized accounting of any deductions for actual damage exceeding normal wear and tear.",
+      "fairness_note": "Strict statutory timeline and financial cap on security deposits prevent landlord withholding abuse."
+    },
+    "maintenance_and_repairs": {
+      "standard_clause": "Landlord is warrantied to maintain the structural integrity, roof, HVAC, plumbing, and major electrical systems in good working order. Tenant is responsible for minor operational maintenance and routine upkeep under $50 per occurrence.",
+      "fairness_note": "Fair residential leases divide maintenance logically: capital improvements fall on the property owner, while minor consumable upkeep falls on the occupant."
+    },
+    "right_of_entry": {
+      "standard_clause": "Landlord must provide Tenant with at least 24 hours advance written notice prior to entering the leased premises for routine inspections, repairs, or prospective viewings. Emergency entry is permitted solely to preserve life or prevent immediate catastrophic property damage.",
+      "fairness_note": "Protects the tenant's fundamental right to privacy and quiet enjoyment of their home."
+    },
+    "subletting_and_assignment": {
+      "standard_clause": "Tenant shall not sublease the premises or assign this Lease without the prior written consent of Landlord, which consent shall not be unreasonably withheld, conditioned, or delayed.",
+      "fairness_note": "Prohibiting absolute subletting bans; requiring the landlord to act reasonably when evaluating prospective sub-tenants."
+    }
+  },
+  "nda_and_confidentiality": {
+    "duration_of_confidentiality": {
+      "standard_clause": "Recipient's duty to protect Confidential Information shall expire three (3) years from the date of disclosure. However, obligations regarding trade secrets shall continue perpetually for as long as such information remains a trade secret under applicable law.",
+      "fairness_note": "A 3-to-5 year sunset clause for general commercial information prevents eternal liability, while preserving infinite protection for core trade secrets."
+    },
+    "standard_exclusions": {
+      "standard_clause": "Confidential Information shall exclude any materials that: (a) are or become publicly known through no breach of Recipient; (b) were rightfully in Recipient's possession prior to disclosure; (c) are independently developed by Recipient without reference to Discloser's information; or (d) are rightfully received from a third party without restriction.",
+      "fairness_note": "These four standard exclusions are vital to ensure the NDA does not restrict public knowledge or independent innovation."
+    },
+    "compelled_disclosure": {
+      "standard_clause": "If Recipient is legally compelled by a court order or governmental agency to disclose Confidential Information, Recipient shall provide Discloser with prompt advance written notice so that Discloser may seek a protective order.",
+      "fairness_note": "Standard legal safety valve ensuring compliance with subpoenas while giving the discloser a chance to defend their secrets."
+    }
+  },
+  "ecommerce_and_consumer": {
+    "return_and_refund_policy": {
+      "standard_clause": "Consumers may initiate a return of unused, undamaged merchandise in original packaging within 30 days of delivery for a full refund to the original payment method. Merchant shall process refunds within 7 business days of inspecting the returned items.",
+      "fairness_note": "A 30-day return window is the recognized consumer benchmark for transparent e-commerce operations."
+    },
+    "warranty_disclaimer": {
+      "standard_clause": "Goods are provided 'as is' and 'as available.' Merchant expressly disclaims all implied warranties of merchantability and fitness for a particular purpose, except where prohibited by mandatory consumer protection statutes.",
+      "fairness_note": "Standard commercial risk allocation, tempered by mandatory statutory consumer rights."
+    },
+    "user_generated_content": {
+      "standard_clause": "By submitting reviews, comments, or media, User grants Merchant a non-exclusive, royalty-free, worldwide license to display and distribute such content. User retains ultimate copyright ownership of their submissions.",
+      "fairness_note": "Balances the platform's need to display user reviews with the creator's fundamental copyright ownership."
+    }
+  },
+  "general_and_boilerplate": {
+    "governing_law_and_venue": {
+      "standard_clause": "This Agreement shall be construed and governed according to the laws of the State of [State], without regard to its conflict of law rules. Both parties consent to the exclusive jurisdiction of the state and federal courts located in [County/City].",
+      "fairness_note": "Establishes a predictable, neutral legal jurisdiction for contract interpretation."
+    },
+    "dispute_resolution_tiered": {
+      "standard_clause": "Any controversy or claim arising out of this Agreement shall first be negotiated in good faith between executive officers. If unresolved within 30 days, the dispute shall be submitted to non-binding mediation. If mediation fails, the dispute shall be finally resolved by binding arbitration under the rules of the American Arbitration Association.",
+      "fairness_note": "Tiered dispute escalation (Negotiation -> Mediation -> Arbitration) saves substantial time and legal expense compared to immediate aggressive litigation."
+    },
+    "force_majeure": {
+      "standard_clause": "Neither party shall be held liable for failure or delay in performance arising from circumstances beyond their reasonable control, including but not limited to acts of God, natural disasters, war, pandemic, terrorism, or severe governmental mandates.",
+      "fairness_note": "Standard mutual protection shielding both sides from catastrophic, unforeseen global occurrences."
+    },
+    "entire_agreement_merger": {
+      "standard_clause": "This contract constitutes the entire, complete, and final agreement between the parties regarding the subject matter herein, superseding all prior oral or written representations, negotiations, and understandings.",
+      "fairness_note": "Prevents parties from bringing up informal verbal promises made prior to signing the formal document."
+    },
+    "severability": {
+      "standard_clause": "If any provision of this Agreement is held to be invalid, illegal, or unenforceable by a court of competent jurisdiction, the remaining provisions shall remain in full force and effect as if the invalid provision had never been included.",
+      "fairness_note": "Ensures that a single defective clause does not void the entire contract."
+    },
+    "waiver": {
+      "standard_clause": "The failure of either party to enforce any right or provision of this Agreement shall not constitute a waiver of that right or provision unless acknowledged and agreed to in writing.",
+      "fairness_note": "Protects parties from losing their contractual rights simply because they did not instantly enforce them on a previous occasion."
+    }
+  }
+}

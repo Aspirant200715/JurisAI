@@ -170,14 +170,31 @@ export default function Home() {
             </h3>
             <ul className="space-y-4">
               {result.risk_analysis.assessments.map((r: any, i: number) => (
-                <li key={i} className="p-4 bg-red-50 rounded-lg border border-red-100">
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="font-bold text-lg">{r.clause_text.substring(0, 50)}...</span>
-                    <span className="bg-red-600 text-white px-3 py-1 rounded-full text-sm font-bold">
-                      Score: {r.risk_score}/10
-                    </span>
+                <li key={i} className="p-4 bg-red-50 rounded-lg border border-red-100 shadow-sm">
+                  <div className="flex justify-between items-center mb-2 flex-wrap gap-2">
+                    <span className="font-bold text-lg">{r.clause_text.substring(0, 60)}...</span>
+                    <div className="flex gap-2">
+                      <span className="bg-red-600 text-white px-2.5 py-1 rounded text-xs font-bold shadow-sm">
+                        Risk: {r.risk_score}/10
+                      </span>
+                      {r.deviation_score != null && (
+                        <span className="bg-orange-500 text-white px-2.5 py-1 rounded text-xs font-bold shadow-sm">
+                          Deviation: {r.deviation_score}/10
+                        </span>
+                      )}
+                    </div>
                   </div>
-                  <p className="text-slate-700">{r.reasoning}</p>
+                  <p className="text-slate-700 mb-3">{r.reasoning}</p>
+                  
+                  {/* Static RAG Benchmark Comparison */}
+                  {r.benchmark_comparison && (
+                    <div className="mt-3 bg-white p-4 rounded-lg border-l-4 border-orange-500 text-sm shadow-sm">
+                      <strong className="text-orange-800 flex items-center gap-2 mb-1">
+                        📊 Benchmark Comparison:
+                      </strong>
+                      <p className="text-slate-700 mt-1 leading-relaxed">{r.benchmark_comparison}</p>
+                    </div>
+                  )}
                 </li>
               ))}
             </ul>

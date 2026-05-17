@@ -9,6 +9,15 @@ import json
 
 load_dotenv(override=True)
 
+# Load Standards
+STANDARDS_PATH = os.path.join(os.path.dirname(__file__), "data/standards.json")
+try:
+    with open(STANDARDS_PATH, "r", encoding="utf-8") as f:
+        STANDARDS_DB = json.load(f)
+except Exception as e:
+    print(f"Warning: Could not load standards.json: {e}")
+    STANDARDS_DB = {}
+
 def clean_json(text: str) -> dict:
     text = text.strip()
     if text.startswith("```json"):
@@ -67,15 +76,26 @@ def extract_clauses_node(state: AgentState):
 
 # Agent 2: Risk Assessor Node
 def assess_risk_node(state: AgentState):
-    print("Agent 2: Assessing risks...")
+    print("⚠️ Agent 2: Assessing risks & comparing to benchmarks...")
     
     clauses = state['extracted_clauses']
     if not clauses:
         state['risk_assessments'] = []
         return state
     
+    # Convert standards to string for RAG context
+    standards_str = json.dumps(STANDARDS_DB, indent=2)
+    
     prompt = f"""
-    You are a legal risk analyst. Score each clause for risk (0-10).
+    You are a legal risk analyst. Analyze the following clauses.
+    For EACH clause, you must:
+    1. Score risk (0-10).
+    2. Compare it against the 'Industry Standards' provided below.
+    3. Calculate a 'Deviation' (Is it worse than standard? By how much?).
+    
+    <INDUSTRY_STANDARDS>
+    {standards_str}
+    </INDUSTRY_STANDARDS>
     
     Clauses to analyze:
     {clauses}
@@ -83,7 +103,13 @@ def assess_risk_node(state: AgentState):
     Return ONLY valid JSON:
     {{
         "assessments": [
-            {{"clause_text": "...", "risk_score": 5, "reasoning": "..."}}
+            {{
+                "clause_text": "...", 
+                "risk_score": 5, 
+                "reasoning": "...",
+                "benchmark_comparison": "Your clause is more restrictive than the standard because...",
+                "deviation_score": 3
+            }}
         ]
     }}
     """
@@ -92,6 +118,7 @@ def assess_risk_node(state: AgentState):
     try:
         result = clean_json(response.content)
         state['risk_assessments'] = result.get('assessments', [])
+        print(f"✅ Assessed {len(state['risk_assessments'])} clauses with benchmarks")
     except Exception as e:
         print(f"Risk Assessor JSON Error: {e}\nContent: {response.content}")
         state['risk_assessments'] = []
