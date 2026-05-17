@@ -1,8 +1,9 @@
 # Use official Node runtime as a parent image
-FROM node:18-alpine AS base
+FROM node:20-alpine AS base
 
 # Step 1: Install dependencies
 FROM base AS deps
+RUN apk add --no-cache libc6-compat
 WORKDIR /app
 COPY package.json package-lock.json* ./
 RUN npm ci
