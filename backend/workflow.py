@@ -1,6 +1,6 @@
 from typing import TypedDict, Annotated, List
 from langgraph.graph import StateGraph, END
-from langchain_google_genai import ChatGoogleGenAI
+from langchain_google_vertexai import ChatVertexAI
 from langchain_core.messages import HumanMessage
 import os
 from dotenv import load_dotenv
@@ -31,12 +31,11 @@ def clean_json(text: str) -> dict:
     text = text.strip()
     return json.loads(text, strict=False)
 
-# Initialize LLM with Google AI Studio (API Key)
+# Initialize LLM with Google Cloud Vertex AI (Global Publisher Model)
 load_dotenv(override=True)
-llm = ChatGoogleGenAI(
-    model="gemini-1.5-flash",
+llm = ChatVertexAI(
+    model_name="gemini-1.5-flash-002",
     temperature=0,
-    api_key=os.getenv("GOOGLE_API_KEY"),
     max_retries=5
 )
 
