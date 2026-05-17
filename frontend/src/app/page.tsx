@@ -55,7 +55,7 @@ export default function Home() {
       clearTimeout(timer5);
 
       if (!res.ok) throw new Error("Failed to analyze document");
-      
+
       const data = await res.json();
       setResult(data);
 
@@ -99,8 +99,8 @@ export default function Home() {
           <strong>Disclaimer:</strong> This tool is for educational purposes only. It does not provide legal advice.
         </div>
         <div className="mt-4">
-          <Link 
-            href="/workflow" 
+          <Link
+            href="/workflow"
             className="text-blue-700 hover:text-blue-900 underline font-semibold inline-flex items-center gap-2"
           >
             <GitBranch className="w-4 h-4" />
@@ -109,7 +109,7 @@ export default function Home() {
         </div>
       </header>
 
-      
+
 
       {/* Upload Section */}
       <section className="max-w-3xl mx-auto bg-white p-8 rounded-xl shadow-md mb-12 border-2 border-slate-200">
@@ -169,7 +169,7 @@ export default function Home() {
       {/* Results Dashboard */}
       {result && (
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
-          
+
           {/* 1. Risk Analysis */}
           <section className="bg-white p-6 rounded-xl shadow-md border-t-4 border-red-500">
             <h3 className="text-2xl font-bold text-red-700 mb-4 flex items-center gap-2">
@@ -192,7 +192,7 @@ export default function Home() {
                     </div>
                   </div>
                   <p className="text-slate-700 mb-3">{r.reasoning}</p>
-                  
+
                   {/* Static RAG Benchmark Comparison */}
                   {r.benchmark_comparison && (
                     <div className="mt-3 bg-white p-4 rounded-lg border-l-4 border-orange-500 text-sm shadow-sm">
@@ -250,7 +250,7 @@ export default function Home() {
             <h3 className="text-2xl font-bold text-indigo-700 mb-4 flex items-center gap-2">
               <Shield className="w-6 h-6" /> Privacy & Compliance
             </h3>
-            
+
             {!result.privacy_scan?.findings || result.privacy_scan.findings.length === 0 ? (
               <p className="text-slate-500 italic p-4 bg-indigo-50 rounded-lg border border-indigo-100">
                 No specific privacy or compliance risks detected in this document.
@@ -264,9 +264,8 @@ export default function Home() {
                         <span className="font-bold text-indigo-900 uppercase text-xs tracking-wider bg-indigo-200 px-2 py-0.5 rounded">
                           {finding.category}
                         </span>
-                        <span className={`px-2.5 py-0.5 rounded text-xs font-bold text-white shadow-sm ${
-                          finding.severity === 'High' ? 'bg-red-600' : finding.severity === 'Medium' ? 'bg-orange-500' : 'bg-emerald-600'
-                        }`}>
+                        <span className={`px-2.5 py-0.5 rounded text-xs font-bold text-white shadow-sm ${finding.severity === 'High' ? 'bg-red-600' : finding.severity === 'Medium' ? 'bg-orange-500' : 'bg-emerald-600'
+                          }`}>
                           {finding.severity}
                         </span>
                       </div>

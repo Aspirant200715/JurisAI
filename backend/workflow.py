@@ -1,6 +1,6 @@
 from typing import TypedDict, Annotated, List
 from langgraph.graph import StateGraph, END
-from langchain_groq import ChatGroq
+from langchain_google_vertexai import ChatVertexAI
 from langchain_core.messages import HumanMessage
 import os
 from dotenv import load_dotenv
@@ -24,16 +24,21 @@ def clean_json(text: str) -> dict:
         text = text[7:]
     elif text.startswith("```"):
         text = text[3:]
+    if text.endswith(":"):
+        text = text[:-1]
     if text.endswith("```"):
         text = text[:-3]
     text = text.strip()
     return json.loads(text, strict=False)
 
-# Initialize LLM
-llm = ChatGroq(
-    model="llama-3.3-70b-versatile",
+# Initialize LLM with Google Cloud Vertex AI (ADC / IAM Credentials)
+load_dotenv(override=True)
+llm = ChatVertexAI(
+    model_name="gemini-1.5-pro",
     temperature=0,
-    api_key=os.getenv("GROQ_API_KEY", os.getenv("GOOGLE_API_KEY"))
+    project=os.getenv("GCP_PROJECT_ID"),
+    location=os.getenv("GCP_LOCATION", "us-central1"),
+    max_retries=5
 )
 
 # Define State Schema
