@@ -34,7 +34,7 @@ def clean_json(text: str) -> dict:
 # Initialize LLM with Google Cloud Vertex AI (ADC / IAM Credentials)
 load_dotenv(override=True)
 llm = ChatVertexAI(
-    model_name="gemini-1.5-pro",
+    model_name="gemini-1.5-pro-002",
     temperature=0,
     project=os.getenv("GCP_PROJECT_ID"),
     location=os.getenv("GCP_LOCATION", "us-central1"),
