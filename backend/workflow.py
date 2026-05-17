@@ -43,6 +43,7 @@ class AgentState(TypedDict):
     risk_assessments: List[dict]
     adversarial_checks: List[dict]
     user_insights: List[dict]
+    privacy_findings: List[dict]
     final_report: dict
 
 # Agent 1: Clause Extractor Node
@@ -197,6 +198,45 @@ def translate_node(state: AgentState):
         state['user_insights'] = []
     return state
 
+# Agent 5: Privacy & Compliance Scanner Node
+def privacy_scan_node(state: AgentState):
+    print("🛡️ Agent 5: Scanning for Privacy & Compliance risks...")
+    
+    prompt = f"""
+    You are a Data Privacy Officer (DPO). Analyze the document for data privacy and compliance risks.
+    Focus on:
+    1. **Data Collection**: What personal data is collected? Is it excessive?
+    2. **Third-Party Sharing**: Is data sold or shared?
+    3. **User Rights**: Are rights like deletion (GDPR) or opt-out (CCPA) mentioned?
+    4. **Security**: Is there a mention of encryption or security standards?
+    
+    Document Text:
+    {state['document_text'][:6000]}
+    
+    Return ONLY valid JSON matching this schema:
+    {{
+        "findings": [
+            {{
+                "category": "collection|sharing|rights|security",
+                "issue": "Brief description of the issue",
+                "severity": "High|Medium|Low",
+                "recommendation": "What the user should look for or ask"
+            }}
+        ]
+    }}
+    """
+    
+    response = llm.invoke([HumanMessage(content=prompt)])
+    try:
+        result = clean_json(response.content)
+        state['privacy_findings'] = result.get('findings', [])
+        print(f"✅ Found {len(state['privacy_findings'])} privacy findings")
+    except Exception as e:
+        print(f"Privacy Scanner JSON Error: {e}\nContent: {response.content}")
+        state['privacy_findings'] = []
+        
+    return state
+
 # Build the Graph
 def create_workflow():
     workflow = StateGraph(AgentState)
@@ -206,13 +246,15 @@ def create_workflow():
     workflow.add_node("risk_assessor", assess_risk_node)
     workflow.add_node("devils_advocate", devils_advocate_node)
     workflow.add_node("translator", translate_node)
+    workflow.add_node("privacy_scan", privacy_scan_node)
     
     # Define edges (sequential flow)
     workflow.set_entry_point("extractor")
     workflow.add_edge("extractor", "risk_assessor")
     workflow.add_edge("risk_assessor", "devils_advocate")
     workflow.add_edge("devils_advocate", "translator")
-    workflow.add_edge("translator", END)
+    workflow.add_edge("translator", "privacy_scan")
+    workflow.add_edge("privacy_scan", END)
     
     return workflow.compile()
 
@@ -226,6 +268,7 @@ def run_analysis(document_text: str):
         "risk_assessments": [],
         "adversarial_checks": [],
         "user_insights": [],
+        "privacy_findings": [],
         "final_report": {}
     }
     

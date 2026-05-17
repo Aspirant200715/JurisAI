@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
-import { AlertTriangle, ShieldCheck, Scale, FileText, Loader2, GitBranch } from "lucide-react";
+import { AlertTriangle, ShieldCheck, Scale, FileText, Loader2, GitBranch, Shield } from "lucide-react";
 
 export default function Home() {
   const [file, setFile] = useState<File | null>(null);
@@ -35,6 +35,10 @@ export default function Home() {
       setLogs(prev => [...prev, "🗣️ Agent 4: Translating legalese to plain English..."]);
     }, 7500);
 
+    const timer5 = setTimeout(() => {
+      setLogs(prev => [...prev, "🛡️ Agent 5: Scanning data privacy & statutory compliance..."]);
+    }, 9500);
+
     const formData = new FormData();
     formData.append("file", file);
 
@@ -48,6 +52,7 @@ export default function Home() {
       clearTimeout(timer2);
       clearTimeout(timer3);
       clearTimeout(timer4);
+      clearTimeout(timer5);
 
       if (!res.ok) throw new Error("Failed to analyze document");
       
@@ -58,12 +63,14 @@ export default function Home() {
       const numRisks = data.risk_analysis?.assessments?.length || 0;
       const numChecks = data.adversarial_check?.checks?.length || 0;
       const numInsights = data.user_insights?.insights?.length || 0;
+      const numPrivacy = data.privacy_scan?.findings?.length || 0;
 
       setLogs([
         `🔍 Agent 1: Extracted ${numClauses} clauses`,
         `⚠️ Agent 2: Assessed ${numRisks} risks`,
         `⚖️ Agent 3: Completed adversarial check (${numChecks} clauses)`,
-        `🗣️ Agent 4: Generated plain English insights (${numInsights} clauses)`
+        `🗣️ Agent 4: Generated plain English insights (${numInsights} clauses)`,
+        `🛡️ Agent 5: Found ${numPrivacy} privacy & compliance findings`
       ]);
     } catch (err: any) {
       setError(err.message || "Something went wrong");
@@ -236,6 +243,42 @@ export default function Home() {
                 </li>
               ))}
             </ul>
+          </section>
+
+          {/* 4. Privacy & Compliance Scan */}
+          <section className="bg-white p-6 rounded-xl shadow-md border-t-4 border-indigo-500 md:col-span-2">
+            <h3 className="text-2xl font-bold text-indigo-700 mb-4 flex items-center gap-2">
+              <Shield className="w-6 h-6" /> Privacy & Compliance
+            </h3>
+            
+            {!result.privacy_scan?.findings || result.privacy_scan.findings.length === 0 ? (
+              <p className="text-slate-500 italic p-4 bg-indigo-50 rounded-lg border border-indigo-100">
+                No specific privacy or compliance risks detected in this document.
+              </p>
+            ) : (
+              <div className="grid md:grid-cols-2 gap-4">
+                {result.privacy_scan.findings.map((finding: any, i: number) => (
+                  <div key={i} className="p-4 bg-indigo-50 rounded-lg border border-indigo-100 shadow-sm flex flex-col justify-between">
+                    <div>
+                      <div className="flex justify-between items-start mb-2 gap-2 flex-wrap">
+                        <span className="font-bold text-indigo-900 uppercase text-xs tracking-wider bg-indigo-200 px-2 py-0.5 rounded">
+                          {finding.category}
+                        </span>
+                        <span className={`px-2.5 py-0.5 rounded text-xs font-bold text-white shadow-sm ${
+                          finding.severity === 'High' ? 'bg-red-600' : finding.severity === 'Medium' ? 'bg-orange-500' : 'bg-emerald-600'
+                        }`}>
+                          {finding.severity}
+                        </span>
+                      </div>
+                      <p className="text-slate-800 font-semibold mb-2 text-base">{finding.issue}</p>
+                    </div>
+                    <div className="mt-2 pt-2 border-t border-indigo-200">
+                      <p className="text-sm text-slate-600 italic">💡 {finding.recommendation}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </section>
 
         </div>

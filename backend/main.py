@@ -30,7 +30,8 @@ async def analyze_contract(file: UploadFile = File(...)):
             "extraction": {"clauses": result['extracted_clauses']},
             "risk_analysis": {"assessments": result['risk_assessments']},
             "adversarial_check": {"checks": result['adversarial_checks']},
-            "user_insights": {"insights": result['user_insights']}
+            "user_insights": {"insights": result['user_insights']},
+            "privacy_scan": {"findings": result['privacy_findings']}
         }
         
     except Exception as e:
