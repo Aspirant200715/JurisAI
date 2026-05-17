@@ -1,12 +1,14 @@
 "use client";
 import { useState } from "react";
-import { AlertTriangle, ShieldCheck, Scale, FileText, Loader2 } from "lucide-react";
+import Link from "next/link";
+import { AlertTriangle, ShieldCheck, Scale, FileText, Loader2, GitBranch } from "lucide-react";
 
 export default function Home() {
   const [file, setFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<any>(null);
   const [error, setError] = useState("");
+  const [logs, setLogs] = useState<string[]>([]);
 
   const handleUpload = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -15,6 +17,23 @@ export default function Home() {
     setLoading(true);
     setError("");
     setResult(null);
+    setLogs(["🚀 Initializing LexGuard multi-agent LangGraph pipeline..."]);
+
+    const timer1 = setTimeout(() => {
+      setLogs(prev => [...prev, "🔍 Agent 1: Extracting key legal clauses..."]);
+    }, 1500);
+
+    const timer2 = setTimeout(() => {
+      setLogs(prev => [...prev, "⚠️ Agent 2: Assessing liability & risk exposure..."]);
+    }, 3500);
+
+    const timer3 = setTimeout(() => {
+      setLogs(prev => [...prev, "⚖️ Agent 3: Performing adversarial stress-test..."]);
+    }, 5500);
+
+    const timer4 = setTimeout(() => {
+      setLogs(prev => [...prev, "🗣️ Agent 4: Translating legalese to plain English..."]);
+    }, 7500);
 
     const formData = new FormData();
     formData.append("file", file);
@@ -25,10 +44,27 @@ export default function Home() {
         body: formData,
       });
 
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+      clearTimeout(timer3);
+      clearTimeout(timer4);
+
       if (!res.ok) throw new Error("Failed to analyze document");
       
       const data = await res.json();
       setResult(data);
+
+      const numClauses = data.extraction?.clauses?.length || 0;
+      const numRisks = data.risk_analysis?.assessments?.length || 0;
+      const numChecks = data.adversarial_check?.checks?.length || 0;
+      const numInsights = data.user_insights?.insights?.length || 0;
+
+      setLogs([
+        `🔍 Agent 1: Extracted ${numClauses} clauses`,
+        `⚠️ Agent 2: Assessed ${numRisks} risks`,
+        `⚖️ Agent 3: Completed adversarial check (${numChecks} clauses)`,
+        `🗣️ Agent 4: Generated plain English insights (${numInsights} clauses)`
+      ]);
     } catch (err: any) {
       setError(err.message || "Something went wrong");
     } finally {
@@ -40,6 +76,13 @@ export default function Home() {
     <main className="min-h-screen bg-slate-50 text-slate-900 p-6 font-sans">
       {/* Header */}
       <header className="max-w-5xl mx-auto mb-10 text-center">
+        <div className="flex justify-between items-center mb-6 bg-white py-4 px-6 rounded-xl shadow-sm border border-slate-200 max-w-xl mx-auto">
+          <span className="font-bold text-xl text-blue-900">LexGuard</span>
+          <div className="flex gap-4">
+            <a href="/" className="text-blue-700 font-semibold hover:underline">Analyze Contract</a>
+            <a href="/workflow" className="text-slate-600 font-semibold hover:text-blue-700 hover:underline">View Workflow</a>
+          </div>
+        </div>
         <h1 className="text-4xl font-bold text-blue-900 mb-2">LexGuard</h1>
         <p className="text-lg text-slate-600">
           AI-Powered Contract Intelligence for Everyone
@@ -48,7 +91,18 @@ export default function Home() {
         <div className="mt-4 bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-3 text-sm text-left inline-block" role="alert">
           <strong>Disclaimer:</strong> This tool is for educational purposes only. It does not provide legal advice.
         </div>
+        <div className="mt-4">
+          <Link 
+            href="/workflow" 
+            className="text-blue-700 hover:text-blue-900 underline font-semibold inline-flex items-center gap-2"
+          >
+            <GitBranch className="w-4 h-4" />
+            View Multi-Agent Workflow
+          </Link>
+        </div>
       </header>
+
+      
 
       {/* Upload Section */}
       <section className="max-w-3xl mx-auto bg-white p-8 rounded-xl shadow-md mb-12 border-2 border-slate-200">
@@ -81,6 +135,27 @@ export default function Home() {
           <p className="mt-4 text-red-600 font-semibold text-center" role="alert">
             {error}
           </p>
+        )}
+
+        {/* Live Execution Logs */}
+        {logs.length > 0 && (
+          <div className="mt-6 bg-slate-900 text-emerald-400 p-5 rounded-xl font-mono text-sm shadow-inner border border-slate-800">
+            <div className="flex items-center justify-between mb-3 pb-2 border-b border-slate-800 text-slate-400 text-xs tracking-wider uppercase">
+              <span className="flex items-center gap-2">
+                <span className={`w-2.5 h-2.5 rounded-full ${loading ? 'bg-emerald-500 animate-pulse' : 'bg-blue-500'}`}></span>
+                LangGraph Execution Terminal
+              </span>
+              <span>{loading ? "Status: RUNNING..." : "Status: COMPLETED"}</span>
+            </div>
+            <div className="space-y-2 text-base">
+              {logs.map((log, index) => (
+                <div key={index} className="flex items-start gap-3 animate-fadeIn">
+                  <span className="text-slate-500 select-none">[{index + 1}]</span>
+                  <span className="text-emerald-300">{log}</span>
+                </div>
+              ))}
+            </div>
+          </div>
         )}
       </section>
 
