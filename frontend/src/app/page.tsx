@@ -54,7 +54,10 @@ export default function Home() {
       clearTimeout(timer4);
       clearTimeout(timer5);
 
-      if (!res.ok) throw new Error("Failed to analyze document");
+      if (!res.ok) {
+        const errData = await res.json().catch(() => ({}));
+        throw new Error(errData.error || "Failed to analyze document");
+      }
 
       const data = await res.json();
       setResult(data);
