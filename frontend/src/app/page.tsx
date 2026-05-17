@@ -43,8 +43,7 @@ export default function Home() {
     formData.append("file", file);
 
     try {
-      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
-      const res = await fetch(`${backendUrl}/upload`, {
+      const res = await fetch("/api/upload", {
         method: "POST",
         body: formData,
       });
